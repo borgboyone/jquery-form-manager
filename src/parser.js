@@ -13,13 +13,13 @@ case 1: return $$[$0-1];
 break;
 case 2: case 8: case 17: case 18: this.$ = $$[$0]; 
 break;
-case 3: $['merge']($$[$0-2], $$[$0]); this.$ = $$[$0-2]; 
+case 3: this.$ = union($$[$0-2], $$[$0]); 
 break;
-case 4: intersect($$[$0-2], $$[$0]); this.$ = $$[$0-2]; 
+case 4: this.$ = intersect($$[$0-2], $$[$0]); 
 break;
-case 6: var inputs = yy['data']['initialInputs'].slice(0); if ($['isArray']($$[$0].attributes)) { inputs = filterByAttributes(inputs, $$[$0].attributes); } if ($.isArray($$[$0].properties)) { inputs = filterByProperties(inputs, $$[$0].properties); } this.$ = inputs; 
+case 6: this.$ = filter(yy['data']['initialInputs'].slice(0), $$[$0].attributes, $$[$0].properties); 
 break;
-case 7: var inputs = yy['data']['initialInputs'].slice(0); if ($['isArray']($$[$0].attributes)) { inputs = filterByAttributes(inputs, $$[$0].attributes); } if ($.isArray($$[$0].properties)) { inputs = filterByProperties(inputs, $$[$0].properties); } this.$ = exclude(yy['data']['initialInputs'], inputs); 
+case 7: var inputs = filter(yy['data']['initialInputs'].slice(0), $$[$0].attributes, $$[$0].properties); this.$ = exclude(yy['data']['initialInputs'].slice(0), inputs); 
 break;
 case 9: var inputs = yy['data']['initialInputs'].slice(0); this.$ = exclude(inputs, $$[$0]);
 break;
@@ -105,12 +105,35 @@ var proto = {trace: function trace(){}, 'parse': null };
         });
         return filtered;
     }
+    function filter(inputs, attributes, properties) {
+        if ($['isArray'](attributes)) {
+            inputs = filterByAttributes(inputs, attributes);
+        }
+        if ($['isArray'](properties)) {
+            inputs = filterByProperties(inputs, properties);
+        }
+        return inputs;
+    }
+
+    function unique(array1) {
+        for(var i = array1.length - 1; i >= 0; i--) {
+            for(var j = i - 1; j >= 0; j--) {
+                if (array1[i] === array1[j]) {
+                    array1.splice(i,1);
+                    break;
+                }
+            }
+        }
+        return array1;
+    }
+    function union(array1, array2) {
+        return unique($['merge'](array1, array2));
+    }
     function exclude(array1, array2) {
         return array1.filter(function(n) {
             return (array2.indexOf(n) == -1);
         });
     }
-    // consider adding this to jQuery.fn
     function intersect(array1, array2) {
         return array1.filter(function(n) {
             return array2.indexOf(n) != -1;
