@@ -1,0 +1,132 @@
+/* lexical grammar */
+%lex
+%%
+
+\s+                   {/* skip whitespace */}
+"&"                   { return '&'; }
+"|"                   { return '|'; }
+"-"                   { return '-'; }
+"("                   { return '('; }
+")"                   { return ')'; }
+"["                   { return '['; }
+"]"                   { return ']'; }
+"="                   { return '='; }
+":"                   { return ':'; }
+";"                   { return ';'; }
+(\\.|[\w-]|[^\x00-\xa0])+ { return 'IDENT'; }
+<<EOF>>               { return 'EOF'; }
+.                     { return 'INVALID'; }
+
+/lex
+
+%{
+    function filter(inputs, attributes, properties, filters) {
+        if ($['isArray'](attributes)) {
+            attributes.forEach(function(property){
+                inputs = filters['properties'][property.name](inputs, property);
+            });
+        }
+        if ($['isArray'](properties)) {
+            properties.forEach(function(dichotomy){
+                inputs = filters['dichotomies'][dichotomy.name](inputs, dichotomy);
+            });
+        }
+        return inputs;
+    }
+
+    function unique(array1) {
+        for(var i = array1.length - 1; i >= 0; i--) {
+            for(var j = i - 1; j >= 0; j--) {
+                if (array1[i] === array1[j]) {
+                    array1.splice(i,1);
+                    break;
+                }
+            }
+        }
+        return array1;
+    }
+    function union(array1, array2) {
+        return unique($['merge'](array1, array2));
+    }
+    function exclude(array1, array2) {
+        return array1.filter(function(n) {
+            return (array2.indexOf(n) == -1);
+        });
+    }
+    function intersect(array1, array2) {
+        return array1.filter(function(n) {
+            return array2.indexOf(n) != -1;
+        });
+    }
+%}
+
+%token IDENT STRING
+%token <operator> '-' '|' '&'
+%left '|'
+%right '-' '&'
+
+%start inputs
+
+%%
+inputs:
+	compound_selector EOF { return $1; }
+	;
+
+compound_selector:
+	unary_selector { $$ = $1; }
+	| compound_selector '|' unary_selector { $$ = union($1, $3); }
+	| compound_selector '&' unary_selector { $$ = intersect($1, $3); }
+	;
+
+group_selector:
+	'(' compound_selector ')'
+	;
+
+unary_selector:
+	selector { $$ = filter(yy['data']['initialInputs'].slice(0), $1.attributes, $1.properties, yy['filters']); }
+	| '-' selector  { var inputs = filter(yy['data']['initialInputs'].slice(0), $2.attributes, $2.properties, yy['filters']); $$ = exclude(yy['data']['initialInputs'].slice(0), inputs); }
+	| group_selector { $$ = $1; }
+	| '-' group_selector { $$ = exclude(yy['data']['initialInputs'].slice(0), $2);}
+	;
+
+selector:
+	attribute { $$ = {attributes: $1}; }
+	| properties { $$ = {properties: $1}; }
+	| attribute properties { $$ = {attributes: $1, properties: $2}; }
+	;
+
+attribute:
+	'[' attribute_list ']' { $$ = $2; }
+	;
+
+attribute_list:
+	attribute_expression { $$ = [$1]; }
+	| attribute_list ',' attribute_expression { $1.push($3); $$ = $1; }
+	;
+
+attribute_expression:
+	ident '=' value { if (!($3 in yy['filters']['properties'])) { yyerror("Invalid attribute name (" + $1 + ")", {recoverable: false}); } $$ = {name: $1, value: $3, operator: $2}; }
+	;
+value:
+	ident { $$ = $1; }
+	| string { $$ = $1; }
+	;
+
+properties:
+	property { $$ = [$1]; }
+	| properties property { $1.push($2); $$ = $1; }
+	;
+
+property:
+	':' ident { if (!($2 in yy['filters']['dichotomies'])) { yyerror("Invalid property name (" + $2 + ")", {recoverable: false}); } $$ = {name: $2, negate: false}; }
+	| ';' ident { if (!($2 in yy['filters']['dichotomies'])) { yyerror("Invalid property name (" + $2 + ")", {recoverable: false}); } $$ = {name: $2, negate: true}; }
+	;
+
+ident:
+	IDENT { $$ = yytext; }
+	;
+
+string:
+	STRING { $$ = yytext; }
+	;
+%%

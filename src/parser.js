@@ -17,11 +17,11 @@ case 3: this.$ = union($$[$0-2], $$[$0]);
 break;
 case 4: this.$ = intersect($$[$0-2], $$[$0]); 
 break;
-case 6: this.$ = filter(yy['data']['initialInputs'].slice(0), $$[$0].attributes, $$[$0].properties); 
+case 6: this.$ = filter(yy['data']['initialInputs'].slice(0), $$[$0].attributes, $$[$0].properties, yy['filters']); 
 break;
-case 7: var inputs = filter(yy['data']['initialInputs'].slice(0), $$[$0].attributes, $$[$0].properties); this.$ = exclude(yy['data']['initialInputs'].slice(0), inputs); 
+case 7: var inputs = filter(yy['data']['initialInputs'].slice(0), $$[$0].attributes, $$[$0].properties, yy['filters']); this.$ = exclude(yy['data']['initialInputs'].slice(0), inputs); 
 break;
-case 9: var inputs = yy['data']['initialInputs'].slice(0); this.$ = exclude(inputs, $$[$0]);
+case 9: this.$ = exclude(yy['data']['initialInputs'].slice(0), $$[$0]);
 break;
 case 10: this.$ = {attributes: $$[$0]}; 
 break;
@@ -35,15 +35,15 @@ case 14: this.$ = [$$[$0]];
 break;
 case 15: $$[$0-2].push($$[$0]); this.$ = $$[$0-2]; 
 break;
-case 16: if (!isValidAttributeName($$[$0-2])) { yyerror("Invalid attribute name (" + $$[$0-2] + ")", {recoverable: false}); } this.$ = {name: $$[$0-2], value: $$[$0], operator: $$[$0-1]}; 
+case 16: if (!($$[$0-2] in yy['filters']['properties'])) { yyerror("Invalid attribute name (" + $$[$0-2] + ")", {recoverable: false}); } this.$ = {name: $$[$0-2], value: $$[$0], operator: $$[$0-1]}; 
 break;
 case 19: this.$ = [$$[$0]]; 
 break;
 case 20: $$[$0-1].push($$[$0]); this.$ = $$[$0-1]; 
 break;
-case 21: if (!isValidPropertyName($$[$0])) { yyerror("Invalid property name (" + $$[$0] + ")", {recoverable: false}); } this.$ = {name: $$[$0], negate: false}; 
+case 21: if (!($$[$0] in yy['filters']['dichotomies'])) { yyerror("Invalid property name (" + $$[$0] + ")", {recoverable: false}); } this.$ = {name: $$[$0], negate: false}; 
 break;
-case 22: if (!isValidPropertyName($$[$0])) { yyerror("Invalid property name (" + $$[$0] + ")", {recoverable: false}); } this.$ = {name: $$[$0], negate: true}; 
+case 22: if (!($$[$0] in yy['filters']['dichotomies'])) { yyerror("Invalid property name (" + $$[$0] + ")", {recoverable: false}); } this.$ = {name: $$[$0], negate: true}; 
 break;
 case 23: case 24: this.$ = yytext; 
 break;
@@ -51,66 +51,16 @@ break;
 };
 var proto = {trace: function trace(){}, 'parse': null };
 
-    var ATTRIBUTE_NAMES = ['name', 'type', 'valid'];
-    var PROPERTY_NAMES = ['hasChanged', 'isValid'];
-    function isValidAttributeName(name) {
-        return $['inArray'](name, ATTRIBUTE_NAMES) != -1;
-    }
-    function isValidPropertyName(name) {
-        return $['inArray'](name, PROPERTY_NAMES) != -1;
-    }
-
-    function filterByAttributes(inputs, attributes) {
-        var filtered = inputs.slice(0);
-        attributes.forEach(function(attr) {
-            switch(attr.name) {
-                case 'name' : filtered = filtered.reduce(function(pass, input) {
-                                if (input['theName']() == attr.value) {
-                                    pass.push(input);
-                                }
-                                return prev;
-                              }, []); break;
-                case 'type' : filtered = filtered.reduce(function(pass, input) {
-                                if (input['_instanceOf'](attr.value)) {
-                                    pass.push(input);
-                                }
-                              }, []); break;
-                case 'valid' : filtered = filtered.reduce(function(pass, input) {
-                                if (input['valid']() == attr.value) {
-                                    pass.push(input);
-                                }
-                              }, []); break;
-            }
-        });
-        return filtered;
-    }
-
-    function filterByProperties(inputs, properties) {
-        var filtered = inputs.slice(0);
-        properties.forEach(function(prop) {
-            switch(prop.name) {
-                case 'hasChanged' : filtered = filtered.reduce(function(pass, input) {
-                                        if (((input['hasChanged']() ? 1 : 0) ^ (prop.negate ? 1 : 0))) {
-                                            pass.push(input);
-                                        }
-                                        return pass;
-                                    }, []); break;
-                case 'isValid'    : filtered = filtered.reduce(function(pass, input) {
-                                        if ((input['isValid']() ? 1 : 0) ^ (prop.negate ? 1 : 0)) {
-                                            pass.push(input);
-                                        }
-                                        return pass;
-                                    }, []); break;
-            }
-        });
-        return filtered;
-    }
-    function filter(inputs, attributes, properties) {
+    function filter(inputs, attributes, properties, filters) {
         if ($['isArray'](attributes)) {
-            inputs = filterByAttributes(inputs, attributes);
+            attributes.forEach(function(property){
+                inputs = filters['properties'][property.name](inputs, property);
+            });
         }
         if ($['isArray'](properties)) {
-            inputs = filterByProperties(inputs, properties);
+            properties.forEach(function(dichotomy){
+                inputs = filters['dichotomies'][dichotomy.name](inputs, dichotomy);
+            });
         }
         return inputs;
     }
@@ -285,7 +235,7 @@ function Lexer() {
     }
 }
 Lexer.prototype = proto;
-Lexer.constructor = Lexer;
+Lexer.prototype.constructor = Lexer;
 return Lexer;
 })();
 //proto.lexer = lexer;
@@ -436,7 +386,6 @@ this.__proto__['parse'] = function parse(input, data) {
             return true;
         }
     }
-    return true;
 }/* ====================== */
 }
 Parser.prototype = proto;
