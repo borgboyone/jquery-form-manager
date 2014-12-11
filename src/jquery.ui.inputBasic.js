@@ -7,6 +7,21 @@ $.widget("aw.inputBasic", $.aw.input, {
 		change: null,
 		maintainInitialDefault: false
 	},
+	_change: function(event) {
+		var uiHash = {
+			'element': this.element,
+			'currentValue': this.value(),
+			'name': this.name,
+			'previousValue': this._lastChangedValue,
+			'source': (event != null ? this.element[0] : undefined)
+		};
+		this._lastChangedValue = uiHash.currentValue;
+
+		this._trigger( "change", event, uiHash );
+		// jQuery ui _trigger doesn't appear to call setTimeout when envoking callbacks, yikes!
+		// FIXME: consider wrapping and unwrapping this.options.change in below
+		//setTimeout($.proxy(function() { this.options.change.call(this, event, ui); }, this), 0);
+	},
 	_destroy: function() {
 		this._super();
 	},
@@ -87,13 +102,15 @@ $.widget("aw.inputBasic", $.aw.input, {
 
 		// set initial value (Note: null is a valid value, undefined is not)
 		if (typeof this.options.initialValue !== 'undefined') {
-			this.value(this.options.initialValue); // maybe , this.options.maintainDefault
+			// MAYBE: this.options.maintainDefault here as well, will require second option to this.value(, xxx)
+			this.value(this.options.initialValue);
 		} else {
 			// get current value and use that if keepDefaults is false
 			if (this.options.maintainInitialDefault !== true) {
 				this.value(this.value());
 			}
 		}
+		this._lastChangedValue = this.value();
 
 		// set-up disabled (MAYBE: should we work this into input?)
 		if (this.options.disabled) {
@@ -102,18 +119,9 @@ $.widget("aw.inputBasic", $.aw.input, {
 			this.enable();
 		}
 
-		// Only add this if options.change callback is present and is a function
-		if ($.isFunction(this.options.change)) {
-			// make this a function: _addChangeListener
-			this._on(this.input, {"change": function(event) {
-				// if this type is radio and turning off, ignore event (there should be a on event following)
-				// create ui object
-				// where do we get the previous, stashed value?
-				// limit ourselves to just the changed value for now
-				var ui = {'element': this.element, 'currentValue': this.value(), 'name': this.name};
-				setTimeout($.proxy(function() { this.options.change.call(this, event, ui); }, this), 0);
-			}});
-		}
+		this._on(this.input, {"change": function(event) {
+			this._change(event);
+		}});
 
 		// export as base input (alread done via this._super())
 	},
@@ -172,7 +180,7 @@ $.widget("aw.inputBasic", $.aw.input, {
 					this.input.each(function(i,e) { $(e).prop("defaultChecked", $.inArray($(e).val(), value) != -1);}).each(function(i,e) { $(e).prop("checked", $.inArray($(e).val(), value) != -1); });
 					return;
 			}
-			// FIXME: call change? ui: source: "user" vs "method"
+			// FIXME: this._change(null);
 		}
 	},
 	reset: function() {
