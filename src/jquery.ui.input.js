@@ -23,6 +23,7 @@
 */
 var input = $.widget( "aw.input", {
 	version: "1.0.0",
+	widgetEventPrefix: "input",
 	options: {
 /*	@option{name: "name", type: "String", default: "none"}
 		The name of the input as used by the form manager.  If undeclared, 
@@ -161,11 +162,20 @@ var input = $.widget( "aw.input", {
 		Returns the current validitation state of the input
 		as returned by the function supplied in the validation option.
 	@returns{type: "Boolean"}
-		Returns `true` if validationState is "valid", false otherwise.
+		Returns `true` if validationState is "valid", `false` otherwise.
 	@end
 */
 	isValid: function() {
 			return this.valid == "valid";
+	},
+/*	@method{name: "isDisabled"}
+		Returns the current disabled state of the input
+	@returns{type: "Boolean"}
+		Returns `true` if disabled is `true`, `false` otherwise.
+	@end
+*/
+	isDisabled: function() {
+			return this.options.disabled;
 	},
 /*	@method{name: "reset"}
 		Resets the input elements value to the either the initial value

@@ -35,15 +35,15 @@ case 14: this.$ = [$$[$0]];
 break;
 case 15: $$[$0-2].push($$[$0]); this.$ = $$[$0-2]; 
 break;
-case 16: if (!($$[$0-2] in yy['filters']['properties'])) { yyerror("Invalid attribute name (" + $$[$0-2] + ")", {recoverable: false}); } this.$ = {name: $$[$0-2], value: $$[$0], operator: $$[$0-1]}; 
+case 16: if (!($$[$0-2] in yy['filters']['properties'])) { yyerror("Invalid attribute name (" + $$[$0-2] + ")", {recoverable: false}); } this.$ = {'name': $$[$0-2], 'value': $$[$0], 'operator': $$[$0-1]}; 
 break;
 case 19: this.$ = [$$[$0]]; 
 break;
 case 20: $$[$0-1].push($$[$0]); this.$ = $$[$0-1]; 
 break;
-case 21: if (!($$[$0] in yy['filters']['dichotomies'])) { yyerror("Invalid property name (" + $$[$0] + ")", {recoverable: false}); } this.$ = {name: $$[$0], negate: false}; 
+case 21: if (!($$[$0] in yy['filters']['dichotomies'])) { yyerror("Invalid property name (" + $$[$0] + ")", {recoverable: false}); } this.$ = {'name': $$[$0], 'negate': false}; 
 break;
-case 22: if (!($$[$0] in yy['filters']['dichotomies'])) { yyerror("Invalid property name (" + $$[$0] + ")", {recoverable: false}); } this.$ = {name: $$[$0], negate: true}; 
+case 22: if (!($$[$0] in yy['filters']['dichotomies'])) { yyerror("Invalid property name (" + $$[$0] + ")", {recoverable: false}); } this.$ = {'name': $$[$0], 'negate': true}; 
 break;
 case 23: case 24: this.$ = yytext; 
 break;
@@ -54,12 +54,12 @@ var proto = {trace: function trace(){}, 'parse': null };
     function filter(inputs, attributes, properties, filters) {
         if ($['isArray'](attributes)) {
             attributes.forEach(function(property){
-                inputs = filters['properties'][property.name](inputs, property);
+                inputs = filters['properties'][property['name']](inputs, property);
             });
         }
         if ($['isArray'](properties)) {
             properties.forEach(function(dichotomy){
-                inputs = filters['dichotomies'][dichotomy.name](inputs, dichotomy);
+                inputs = filters['dichotomies'][dichotomy['name']](inputs, dichotomy);
             });
         }
         return inputs;

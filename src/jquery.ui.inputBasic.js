@@ -172,6 +172,7 @@ $.widget("aw.inputBasic", $.aw.input, {
 					this.input.each(function(i,e) { $(e).prop("defaultChecked", $.inArray($(e).val(), value) != -1);}).each(function(i,e) { $(e).prop("checked", $.inArray($(e).val(), value) != -1); });
 					return;
 			}
+			// FIXME: call change? ui: source: "user" vs "method"
 		}
 	},
 	reset: function() {

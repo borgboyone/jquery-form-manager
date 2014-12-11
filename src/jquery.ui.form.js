@@ -46,6 +46,14 @@ var form = $.widget( "aw.form", {
 	                return pass;
 	            }, []);
 	        };
+	        filters.dichotomies.isDisabled = function(inputs, dichotomy) {
+				return inputs.reduce(function(pass, input) {
+	                if (((input['isDisabled']() ? 1 : 0) ^ (dichotomy.negate ? 1 : 0))) {
+	                    pass.push(input);
+	                }
+	                return pass;
+	            }, []);
+	        };
 	        $.aw.utilities.filters.create(this.widgetFullName, filters);
 	    }
 	},
