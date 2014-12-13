@@ -7,20 +7,29 @@ The **jQuery Form Manager** plugin provides a comprehensive framework for workin
 The W3C has been working toward providing a meaningful and functionally useful specification of form input control and validation for some time.  As it stands, implementation varies from browser to browser, with some browsers providing no support at all.  This collection of jQuery UI Widgets aims to provide a constitent, cross browser interface that can be extended to accomodate any user input construct.
 
 ###Input
-The latch pin of this collection is the _Input_ widget.  Most importantly, it brings the concept of an interface to the jQuery UI framework; a key feature that has been lacking for some time.  Any interactive element can become an _Input_ by extending the base widget and implementing a handful of functions (See Examples below).
+The base foundation in this collection of form related tools is the _Input_ widget.  The _Input_ widget specifies the interface that users should make available when extending the widget and also provides some rudimentary functionality.
 
-The _Input_ widget specifies the interface that users should make available when extending the widget and also provides some rudimentary functionality.  Core concept functions include:
--get and set the value (`input([value])`)
--reset the input to its initial value (`reset`)
--a user defined validation function (`validation`)
--visual response methods to validation outcome (`invalidate`)
--removal of these visuals (`clear`)
--callback when the value is changed (`change`)
+Core concept functions include:
 
-_Input_ also provides helpful query functions that indicate if the input value has changed, if the input is valid, or if the input is disabled.
+-`input([value])`: get or set the value of the input
+-`name`: name of the input either set as an option or element attribute
+-`reset`: reset the input to its initial value
+-`validation`:a user defined validation function
+-`invalidate`: visual response method to negative validation outcome
+-`clear`: removal of these visuals
+-`change`: callback when the value is changed
+-`validationState`: the current validation state of the input
+
+State functions include:
+
+-`hasChanged`: Has the input value changed since the value was last set
+-`isValid`: Is the input's value considered valid
+-`isDisabled`: Is the input disabled
+
+The _Input_ widget is noval in that it brings the concept of an interface to the jQuery UI framework; a key feature that has been lacking for some time.  Any interactive element can become an _Input_ by extending the base widget and implementing a handful of functions (See Examples below).
 
 ###Form
-Bringing it all together is the _Form_ widget which provides the cohesive glue expected for a collection of Inputs, acting as both the overseer and manager of any Input widget that falls under its umbrella.
+Bringing everything together is the _Form_ widget which provides the cohesive glue expected for a collection of Inputs, acting as both the overseer and manager of any Input widget that falls under its umbrella.
 
 The Form functionality mirrors that of the Input interface with the only difference being that functions are applied to all Inputs that are considered a part of the Form.  For example, users can query all the values of the Inputs, the names of the Inputs, call any of the Input methods such as `clear`, `reset`, `validate`...all at the Form level.
 
@@ -28,7 +37,7 @@ Note, the Form doesn't require an actual form element; it can be attached to any
 
 The jQuery UI Form manager also provides an extensive selector mechanism for filtering Inputs in all Form functions.  _Inputs_ can be filtered by properties (aka attributes) and dichotomies (aka booleans).  In addition to these filters there are also various Venn type operators available, including exclude ('-'), group ('('...')'), merge ('|') and intersect ('&').  Combined with the base filtering mechanisms, these operators provide aggregation of inputs that would normally only be accomplished through several intermediate calls to the `inputs` function.
 
-An Input wrapper for basic input form elements (text, password, textarea, select, checkbox, and radio) is provided to aid users in getting started quickly with the Form Manager.
+An Input implementation for basic input form elements (text, password, textarea, select, checkbox, and radio) is provided to aid users in getting started quickly with the Form Manager.
 
 A demo and further information, including access to the api, is available at http://borgboyone.github.io/jquery-form-manager/
 
