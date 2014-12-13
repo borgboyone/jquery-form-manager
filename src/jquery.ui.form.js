@@ -1,3 +1,14 @@
+/*!
+ * jQuery UI Form 1.0.0
+ * https://github.com/borgboyone/jquery-form-manager
+ *
+ * Copyright 2014 Anthony Wells
+ * Released under the MIT license.
+ * https://raw.githubusercontent.com/borgboyone/jquery-form-manager/master/LICENSE
+ *
+ * http://borgboyone.github.io/jquery-form-manager/
+ */
+
 var form = $.widget( "aw.form", {
 	version: "1.0.0",
 	options: {

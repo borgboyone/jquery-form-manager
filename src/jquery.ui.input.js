@@ -1,3 +1,14 @@
+/*!
+ * jQuery UI Input 1.0.0
+ * https://github.com/borgboyone/jquery-form-manager
+ *
+ * Copyright 2014 Anthony Wells
+ * Released under the MIT license.
+ * https://raw.githubusercontent.com/borgboyone/jquery-form-manager/master/LICENSE
+ *
+ * http://borgboyone.github.io/jquery-form-manager/
+ */
+
 /*	@module{name: "input"}
 		Provides the input interface and default functionality
 		for inputs used with the form manager.
@@ -21,6 +32,7 @@
 		callback.
 	@end
 */
+
 var input = $.widget( "aw.input", {
 	version: "1.0.0",
 	widgetEventPrefix: "input",
