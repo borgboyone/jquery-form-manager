@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="jQuery Form Manager : jQuery plugin providing an extensive base framework and toolset for working with web page inputs, either individually or as a group.">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>jQuery Form Manager</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/borgboyone/jquery-form-manager">View on GitHub</a>
+
+          <h1 id="project_title">jQuery Form Manager</h1>
+          <h2 id="project_tagline">jQuery plugin providing an extensive base framework and toolset for working with web page inputs, either individually or as a group.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/borgboyone/jquery-form-manager/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/borgboyone/jquery-form-manager/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="jquery-form-manager" class="anchor" href="#jquery-form-manager" aria-hidden="true"><span class="octicon octicon-link"></span></a>jQuery-Form-Manager</h1>
+
+<p>The <strong>jQuery Form Manager</strong> plugin provides a comprehensive framework for working with not only standard HTML forms and their inputs but also user defined input elements.</p>
+
+<h3>
+<a id="overview" class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview</h3>
+
+<p>The W3C has been working toward providing a meaningful and functionally useful specification of form input control and validation for some time.  As it stands, implementation varies from browser to browser, with some browsers providing no support at all.  This collection of jQuery UI Widgets aims to provide a constitent, cross browser interface that can be extended to accomodate any user input construct.</p>
+
+<h3>
+<a id="input" class="anchor" href="#input" aria-hidden="true"><span class="octicon octicon-link"></span></a>Input</h3>
+
+<p>The base foundation in this collection of form related tools is the <em>Input</em> widget.  The <em>Input</em> widget specifies the interface that users should make available when extending the widget and also provides some rudimentary functionality.</p>
+
+<p>Core concept functions include:</p>
+
+<ul>
+<li>
+<code>input([value])</code>: get or set the value of the input</li>
+<li>
+<code>name</code>: name of the input either set as an option or element attribute</li>
+<li>
+<code>reset</code>: reset the input to its initial value</li>
+<li>
+<code>validation</code>:a user defined validation function</li>
+<li>
+<code>invalidate</code>: visual response method to negative validation outcome</li>
+<li>
+<code>clear</code>: removal of these visuals</li>
+<li>
+<code>change</code>: callback when the value is changed</li>
+<li>
+<code>validationState</code>: the current validation state of the input</li>
+</ul>
+
+<p>State functions include:</p>
+
+<ul>
+<li>
+<code>hasChanged</code>: Has the input value changed since the value was last set</li>
+<li>
+<code>isValid</code>: Is the input's value considered valid</li>
+<li>
+<code>isDisabled</code>: Is the input disabled</li>
+</ul>
+
+<p>The <em>Input</em> widget is noval in that it brings the concept of an interface to the jQuery UI framework; a key feature that has been lacking for some time.  Any interactive element can become an <em>Input</em> by extending the base widget and implementing a handful of functions (See Examples below).</p>
+
+<h3>
+<a id="form" class="anchor" href="#form" aria-hidden="true"><span class="octicon octicon-link"></span></a>Form</h3>
+
+<p>Bringing everything together is the <em>Form</em> widget which provides the cohesive glue expected for a collection of Inputs, acting as both the overseer and manager of any Input widget that falls under its umbrella.</p>
+
+<p>The Form functionality mirrors that of the Input interface with the only difference being that functions are applied to all Inputs that are considered a part of the Form.  For example, users can query all the values of the Inputs, the names of the Inputs, call any of the Input methods such as <code>clear</code>, <code>reset</code>, <code>validate</code>...all at the Form level.</p>
+
+<p>Note, the Form doesn't require an actual form element; it can be attached to any element.  Also, it is not necessary to specify the Inputs when instantiating the Form.  Any Input that is a descendent of the Form element is automatically associated with the Form.  There is no stored association and Input's can be created and destroyed at will.</p>
+
+<p>The jQuery UI Form manager also provides an extensive selector mechanism for filtering Inputs in all Form functions.  <em>Inputs</em> can be filtered by properties (aka attributes) and dichotomies (aka booleans).  In addition to these filters there are also various Venn type operators available, including exclude ('-'), group ('('...')'), merge ('|') and intersect ('&amp;').  Combined with the base filtering mechanisms, these operators provide aggregation of inputs that would normally only be accomplished through several intermediate calls to the <code>inputs</code> function.</p>
+
+<p>An Input implementation for basic input form elements (text, password, textarea, select, checkbox, and radio) is provided to aid users in getting started quickly with the Form Manager.</p>
+
+<p>A demo and further information, including access to the api, is available at <a href="http://borgboyone.github.io/jquery-form-manager/">http://borgboyone.github.io/jquery-form-manager/</a></p>
+
+<h2>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples</h2>
+
+<h4>
+<a id="radio-button-group" class="anchor" href="#radio-button-group" aria-hidden="true"><span class="octicon octicon-link"></span></a>Radio Button Group</h4>
+
+<div class="highlight highlight-html"><pre>&lt;<span class="pl-ent">div</span> <span class="pl-e">id</span>=<span class="pl-s1"><span class="pl-pds">"</span>season<span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">label</span> <span class="pl-e">for</span>=<span class="pl-s1"><span class="pl-pds">"</span>season<span class="pl-pds">"</span></span>&gt;Season&lt;/<span class="pl-ent">label</span>&gt;
+    &lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s1"><span class="pl-pds">"</span>radio<span class="pl-pds">"</span></span> <span class="pl-e">name</span>=<span class="pl-s1"><span class="pl-pds">"</span>season<span class="pl-pds">"</span></span> <span class="pl-e">checked</span>=<span class="pl-s1"><span class="pl-pds">"</span>checked<span class="pl-pds">"</span></span> <span class="pl-e">value</span>=<span class="pl-s1"><span class="pl-pds">"</span>winter<span class="pl-pds">"</span></span>&gt;Winter&lt;/<span class="pl-ent">input</span>&gt;
+    &lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s1"><span class="pl-pds">"</span>radio<span class="pl-pds">"</span></span> <span class="pl-e">name</span>=<span class="pl-s1"><span class="pl-pds">"</span>season<span class="pl-pds">"</span></span> <span class="pl-e">value</span>=<span class="pl-s1"><span class="pl-pds">"</span>spring<span class="pl-pds">"</span></span>&gt;Spring&lt;/<span class="pl-ent">input</span>&gt;
+    &lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s1"><span class="pl-pds">"</span>radio<span class="pl-pds">"</span></span> <span class="pl-e">name</span>=<span class="pl-s1"><span class="pl-pds">"</span>season<span class="pl-pds">"</span></span> <span class="pl-e">value</span>=<span class="pl-s1"><span class="pl-pds">"</span>summer<span class="pl-pds">"</span></span>&gt;Summer&lt;/<span class="pl-ent">input</span>&gt;
+    &lt;<span class="pl-ent">input</span> <span class="pl-e">type</span>=<span class="pl-s1"><span class="pl-pds">"</span>radio<span class="pl-pds">"</span></span> <span class="pl-e">name</span>=<span class="pl-s1"><span class="pl-pds">"</span>season<span class="pl-pds">"</span></span> <span class="pl-e">value</span>=<span class="pl-s1"><span class="pl-pds">"</span>autumn<span class="pl-pds">"</span></span>&gt;Autumn&lt;/<span class="pl-ent">input</span>&gt;
+&lt;/<span class="pl-ent">div</span>&gt;</pre></div>
+
+<p>with</p>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> seasonInput <span class="pl-k">=</span> $(<span class="pl-s1"><span class="pl-pds">'</span>#season<span class="pl-pds">'</span></span>).inputBasic({initialValue<span class="pl-k">:</span> <span class="pl-s1"><span class="pl-pds">'</span>spring<span class="pl-pds">'</span></span>}).inputBasic(<span class="pl-s1"><span class="pl-pds">"</span>instance<span class="pl-pds">"</span></span>);
+<span class="pl-en">console</span><span class="pl-s3">.log</span>(seasonInput.<span class="pl-sc">value</span>()); <span class="pl-c">// Outputs 'spring'</span>
+seasonInput.<span class="pl-sc">value</span>(<span class="pl-s1"><span class="pl-pds">'</span>summer<span class="pl-pds">'</span></span>);
+<span class="pl-en">console</span><span class="pl-s3">.log</span>(seasonInput.<span class="pl-sc">value</span>()); <span class="pl-c">// Outputs 'summer'</span></pre></div>
+
+<h4>
+<a id="ui-slider-as-an-input" class="anchor" href="#ui-slider-as-an-input" aria-hidden="true"><span class="octicon octicon-link"></span></a>UI Slider as an Input</h4>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-s">var</span> inputSlider <span class="pl-k">=</span> $.widget(<span class="pl-s1"><span class="pl-pds">"</span>ui.slider<span class="pl-pds">"</span></span>, 
+    $.aw.experimental.implement(
+        $.aw.experimental.acquireTraits(
+            {
+                <span class="pl-en">_create</span>: <span class="pl-st">function</span>() {
+                    <span class="pl-v">this</span>._super();
+                    <span class="pl-v">this</span>._defaultValue <span class="pl-k">=</span> <span class="pl-v">this</span>.<span class="pl-sc">value</span>();
+                },
+                <span class="pl-en">value</span>: <span class="pl-st">function</span>(<span class="pl-vpf">value</span>) {
+                    <span class="pl-v">this</span>._super(value);
+                    <span class="pl-v">this</span>._defaultValue <span class="pl-k">=</span> value;
+                },
+                <span class="pl-en">reset</span>: <span class="pl-st">function</span>() {
+                    <span class="pl-v">this</span>.<span class="pl-sc">value</span>(<span class="pl-v">this</span>._defaultValue);
+                },
+                <span class="pl-en">hasChanged</span>: <span class="pl-st">function</span>() {
+                    <span class="pl-k">return</span> <span class="pl-v">this</span>.<span class="pl-sc">value</span> <span class="pl-k">!==</span> <span class="pl-v">this</span>._defaultValue;
+                },
+                <span class="pl-en">_change</span>: <span class="pl-st">function</span>(<span class="pl-vpf">event</span>) {
+                    <span class="pl-s">var</span> uiHash <span class="pl-k">=</span> {
+                        <span class="pl-s1"><span class="pl-pds">'</span>element<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-v">this</span>.element,
+                        <span class="pl-s1"><span class="pl-pds">'</span>currentValue<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-v">this</span>.<span class="pl-sc">value</span>(),
+                        <span class="pl-s1"><span class="pl-pds">'</span>value<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-v">this</span>.<span class="pl-sc">value</span>(),
+                        <span class="pl-s1"><span class="pl-pds">'</span>name<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-v">this</span>.<span class="pl-sc">name</span>,
+                        <span class="pl-s1"><span class="pl-pds">'</span>previousValue<span class="pl-pds">'</span></span><span class="pl-k">:</span> <span class="pl-v">this</span>._lastChangedValue,
+                        <span class="pl-s1"><span class="pl-pds">'</span>source<span class="pl-pds">'</span></span><span class="pl-k">:</span> (<span class="pl-s3">event</span> <span class="pl-k">!=</span> <span class="pl-c1">null</span> <span class="pl-k">?</span> <span class="pl-v">this</span>.element[<span class="pl-c1">0</span>] <span class="pl-k">:</span> <span class="pl-c1">undefined</span>)
+                    };
+                    <span class="pl-v">this</span>._lastChangedValue <span class="pl-k">=</span> uiHash.currentValue;
+                    <span class="pl-v">this</span>._trigger( <span class="pl-s1"><span class="pl-pds">"</span>change<span class="pl-pds">"</span></span>, <span class="pl-s3">event</span>, uiHash );
+                }
+            },
+            $.aw.<span class="pl-sc">input</span>
+        ),
+        $.aw.<span class="pl-sc">input</span>
+    )
+);</pre></div>
+
+<h4>
+<a id="form-input-values-for-ajax-post" class="anchor" href="#form-input-values-for-ajax-post" aria-hidden="true"><span class="octicon octicon-link"></span></a>Form Input values for Ajax Post</h4>
+
+<div class="highlight highlight-javascript"><pre>$.post({
+    my_url,
+    $.param($(<span class="pl-s1"><span class="pl-pds">'</span>body<span class="pl-pds">'</span></span>).<span class="pl-sc">form</span>(<span class="pl-s1"><span class="pl-pds">'</span>values<span class="pl-pds">'</span></span>))
+});</pre></div>
+
+<h2>
+<a id="limitations" class="anchor" href="#limitations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Limitations</h2>
+
+<p>There are no known limitations at this time.</p>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>MIT License. Copyright 2014, Anthony Wells.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">jQuery Form Manager maintained by <a href="https://github.com/borgboyone">borgboyone</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
