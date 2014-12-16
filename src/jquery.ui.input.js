@@ -199,7 +199,7 @@ var input = $.widget( "aw.input", {
 */
 	reset: function() { this.clear(); },
 /*	@method{name: "clear"}
-		Sets the valid state of the input to true and clears the
+		Sets the valid state of the input to "valid" and clears the
 		invalidateClass option from the input element.  Should be overridden
 		in tandem with a custom invalidate method.
 	@params

@@ -48,6 +48,57 @@
     	});
     }
 
+	$.aw.experimental = $.aw.experimental || {};
+
+	if (!$.aw.experimental.implement) {
+		$.aw.experimental.implement = function(ext, imp) {
+			if (!(imp instanceof $.widget.constructor))
+				throw new Error("Implementable must be instance of $.widget");
+			// TODO: verify core functions of imp exist in ext
+			ext['_create'] = (function(_create, imp){ 
+				return function() {
+					if ($.isFunction(_create)) {
+						_create.apply(this);
+					} else {
+						this._super();
+					}
+					this.element.data(imp.widgetFullName, this);
+				};
+			})(ext._create, imp.prototype);
+			ext['_destroy'] = (function(_destroy, imp){
+				return function() {
+					this.element.data(imp.widgetFullName, null);
+					if ($.isFunction(_destroy)) {
+						_destroy.apply(this);
+					} else {
+						this._super();
+					}
+				};
+			})(ext._destroy, imp.prototype);
+			return ext;
+		};
+	}
+	if (!$.aw.experimental.acquireTraits) {
+		$.aw.experimental.acquireTraits = function(to, from) {
+			// make sure "from" is a $.widget
+			if (!(from instanceof $.widget.constructor))
+				throw new Error("Trait supplier must be instance of $.widget");
+			// make sure "to" is a PlainObject
+			if (!$.isPlainObject(to))
+				throw new Error("Trait receiver must be a plain object");
+			var traits = $.aw.exclude(Object.keys(from.prototype), ['widgetName', 'widgetFullName', 'widgetEventPrefix', 'namespace', 'constructor', 'version', 'options']).reduce(function(prev, cur) { if (cur.substring(0,1) !== '_') { prev.push(cur); } return prev; }, []);
+			// only add trait to "to" if it doesn't exist
+			traits.forEach(function(trait) { if (!(trait in to)) { to[trait] = from.prototype[trait]; }});
+			// same for options
+			var options = from.prototype.options;
+			if ($.isPlainObject(options)) {
+				if (!('options' in to)) { to['options'] = {}; }
+				Object.keys(options).forEach(function(option) { if (!(option in to)) { to['options'][option] = options[option]; }});
+			}
+			return to;
+		};
+	}
+
 	$.aw.utilities = $.aw.utilities || {};
 
 	if (!$.aw.utilities.filters) {

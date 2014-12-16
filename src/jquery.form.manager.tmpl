@@ -1,0 +1,32 @@
+/*!
+ * jQuery Form Manager 1.0.0
+ * https://github.com/borgboyone/jquery-form-manager
+ *
+ * Copyright 2014 Anthony Wells
+ * Released under the MIT license.
+ * https://raw.githubusercontent.com/borgboyone/jquery-form-manager/master/LICENSE
+ *
+ * http://borgboyone.github.io/jquery-form-manager/
+ */
+
+(function( factory ) {
+	if ( typeof define === "function" && define.amd ) {
+
+		// AMD. Register as an anonymous module.
+		define([ "jquery" ], factory );
+	} else {
+
+		// Browser globals
+		factory( jQuery );
+	}
+}(function( $ ) {
+
+[% INCLUDE './jquery.ui.filter.js' %]
+
+[% INSERT './jquery.ui.input.js' %]
+
+[% INSERT './jquery.ui.inputBasic.js' %]
+
+[% INSERT './jquery.ui.form.js' %]
+
+}));

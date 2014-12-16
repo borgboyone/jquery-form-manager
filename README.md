@@ -43,6 +43,7 @@ A demo and further information, including access to the api, is available at htt
 
 Examples
 --------
+###Radio Button Group
 ```html
 <div id="season">
 	<label for="season">Season</label>
@@ -54,10 +55,58 @@ Examples
 ```
 with
 ```javascript
-var seasonInput = $('#season').inputBasic({initialValue: 'spring'}).("instance");
+var seasonInput = $('#season').inputBasic({initialValue: 'spring'}).inputBasic("instance");
 console.log(seasonInput.value()); // Outputs 'spring'
 seasonInput.value('summer');
 console.log(seasonInput.value()); // Outputs 'summer'
+```
+###Ui Slider as an Input
+```javascript
+var inputSlider = $.widget("ui.slider", 
+    $.aw.experimental.implement(
+        $.aw.experimental.acquireTraits(
+            {
+				_create: function() {
+					this._super();
+					this._defaultValue = this.value();
+				},
+				value: function(value) {
+					this._super(value);
+					this._defaultValue = value;
+				},
+				reset: function() {
+					this.value(this._defaultValue);
+				},
+				hasChanged: function() {
+					return this.value !== this._defaultValue;
+				},
+				_change: function(event) {
+					var uiHash = {
+						'element': this.element,
+						'currentValue': this.value(),
+						'value': this.value(),
+						'name': this.name,
+						'previousValue': this._lastChangedValue,
+						'source': (event != null ? this.element[0] : undefined)
+					};
+					this._lastChangedValue = uiHash.currentValue;
+
+					this._trigger( "change", event, uiHash );
+				}
+            },
+            $.aw.input
+        ),
+        $.aw.input
+    )
+);
+```
+
+###Form Input values for Ajax Post
+```javascript
+$.post({
+    my_url,
+    $.param($('body').form('values'))
+});
 ```
 
 Limitations
