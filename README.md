@@ -7,14 +7,14 @@ The **jQuery Form Manager** plugin provides a comprehensive framework for workin
 The W3C has been working toward providing a meaningful and functionally useful specification of form input control and validation for some time.  As it stands, implementation varies from browser to browser, with some browsers providing no support at all.  This collection of jQuery UI Widgets aims to provide a constitent, cross browser interface that can be extended to accomodate any user input construct.
 
 ###Input
-The base foundation in this collection of form related tools is the _Input_ widget.  The _Input_ widget specifies the interface that users should make available when extending the widget and also provides some rudimentary functionality.
+The base foundation in this collection of form related tools is the _Input_ widget.  The _Input_ widget specifies the interface that users should make available when extending the widget and also provides rudimentary functionality.
 
 Core concept functions include:
 
 - `input([value])`: get or set the value of the input
 - `name`: name of the input either set as an option or element attribute
 - `reset`: reset the input to its initial value
-- `validation`:a user defined validation function
+- `validation`: user defined validation function
 - `invalidate`: visual response method to negative validation outcome
 - `clear`: removal of these visuals
 - `change`: callback when the value is changed
@@ -29,9 +29,9 @@ State functions include:
 The _Input_ widget is noval in that it brings the concept of an interface to the jQuery UI framework; a key feature that has been lacking for some time.  Any interactive element can become an _Input_ by extending the base widget and implementing a handful of functions (See Examples below).
 
 ###Form
-Bringing everything together is the _Form_ widget which provides the cohesive glue expected for a collection of Inputs, acting as both the overseer and manager of any Input widget that falls under its umbrella.
+The _Form_ widget brings everything together by providing the cohesive glue expected for a collection of Inputs, acting as both the overseer and manager of any _Input_ that is attached to an element that is a descendent of the Form's attached element.
 
-The Form functionality mirrors that of the Input interface with the only difference being that functions are applied to all Inputs that are considered a part of the Form.  For example, users can query all the values of the Inputs, the names of the Inputs, call any of the Input methods such as `clear`, `reset`, `validate`...all at the Form level.
+The Form functionality mirrors that of the Input interface with the only difference being that functions are applied to all Inputs that are considered a part of the Form.  For example, users can query all the values of the Inputs, the names of the Inputs, call any of the Input methods, such as `clear`, `reset`, `validate`, all at the Form level.
 
 Note, the Form doesn't require an actual form element; it can be attached to any element.  Also, it is not necessary to specify the Inputs when instantiating the Form.  Any Input that is a descendent of the Form element is automatically associated with the Form.  There is no stored association and Input's can be created and destroyed at will.
 
