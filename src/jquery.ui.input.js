@@ -95,13 +95,6 @@ var input = $.widget( "aw.input", {
         }
         return base;
 	},
-	_instanceOf: function(name) {
-		var base = this, found = false;
-		while ((base.__proto__.widgetName != "widget") && !(found = (base.__proto__.widgetName == name))) {
-			base = base.__proto__;
-		}
-		return found;
-	},
 	_init: function() {
 		if (this == this._base())
 			throw Error("Input cannot be instantiated directly but must be extended.");

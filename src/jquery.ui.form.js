@@ -15,6 +15,16 @@ var form = $.widget( "aw.form", {
 	},
 	_create: function() {
 		this._super();
+		if (!$.aw.utilities.instanceOf) {
+			// TODO: Add namespace support
+        	$.aw.utilities.instanceOf = function(input, name) {
+				var base = input, found = false;
+				while ((base.__proto__.widgetName != "widget") && !(found = (base.__proto__.widgetName == name))) {
+					base = base.__proto__;
+				}
+				return found;
+        	}
+		}
 		if ($.aw.utilities.filters.get(this.widgetFullName) === null) {
 			var filters = {properties: {}, dichotomies: {}};
 	        filters.properties.name = function(inputs, property) {
@@ -27,7 +37,7 @@ var form = $.widget( "aw.form", {
 	        };
 	        filters.properties.type = function(inputs, property) {
 	            return inputs.reduce(function(pass, input) {
-	                if (input['_instanceOf'](property.value)) {
+	                if ($.aw.utilities.instanceOf(input, property.value)) {
 	                    pass.push(input);
 	                }
 	                return pass;
