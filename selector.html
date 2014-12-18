@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="jQuery Form Manager : jQuery plugin providing an extensive base framework and toolset for working with web page inputs, either individually or as a group.">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/my-styles.css">
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.11.2/jquery-ui.min.js"></script>
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            var menu = $('#main_content').find('h1,h2,h3').clone().find('a').each(function(i,e) { $(e).html($(e).parent().text()); $(e).attr('id', null); }).wrap('<div class="menu-item"></div>').parent().wrapAll('<div class="menu"></div>').parent();
+            menu.hide().appendTo('#header_wrap .inner .simple-menu');
+            jQuery('#header_wrap .inner .simple-menu').hover(function() { $('#header_wrap .inner .simple-menu .menu').stop().animate({opacity: 1.0, height: "toggle"}, 750);}, function() {$('#header_wrap .inner .simple-menu .menu').stop().animate({opacity: 0.0, height: "toggle"}, 750);});
+        });
+    </script>
+
+    <title>Selector - jQuery Form Manager</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+            <div class="simple-menu"><span>On This Page</span></div>
+          <a id="forkme_banner" href="https://github.com/borgboyone/jquery-form-manager">View on GitHub</a>
+
+          <h1 id="project_title">jQuery Form Manager</h1>
+          <h2 id="project_tagline">jQuery plugin providing an extensive base framework and toolset for working with web page inputs, either individually or as a group.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://raw.githubusercontent.com/borgboyone/jquery-form-manager/master/src/jquery.form.manager.min.js">Download this project's min js file</a>
+              <a class="tar_download_link" href="https://raw.githubusercontent.com/borgboyone/jquery-form-manager/master/src/jquery.form.manager.js">Download this project's js file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+<h2 id="selectors" class="text-header"><a id="selectors" class="anchor" href="#selectors" aria-hidden="true"></a>Selectors</h2>
+<p>Input Selectors are assembled using a combination of filter and aggregate directives. Filtering directives fall into two categories, those that examine properties, where the underlying property of the entity can have any value, and those that examine dichotomies, where the underlying property of the entity can have only two values (usually <code>true</code> or <code>false</code>). Aggregation directives on the other hand, dictate how filtered collections are combined into new collections. They consist of common operations used in the merging of sets.</p>
+
+<h3 id="properties" class="text-header"><a id="properties" class="anchor" href="#properties" aria-hidden="true"></a>Properties</h3>
+<p>Properties must appear as key, value pairs delimited by an operator and enclosed in square brackets (‘[’, ’]’) with multiple pairs separated by commas. Currently, only the equal operation (“=”) is supported.</p>
+<p>Valid keys consist of:</p>
+
+<ul>
+ <li>"name": Inputs are filtered based on the value returned by <code>theName</code></li>
+ <li>"valid": Inputs are filtered based on the value returned by <code>validationStatus</code></li>
+ <li>"type": Inputs are filtered based on the Widget <code>name</code> (not <code>fullName</code>) of either the base widget or parent widgets</li>
+</ul>
+
+<h3 id="dichotomies" class="text-header"><a id="dichotomies" class="anchor" href="#dichotomies" aria-hidden="true"></a>Dichotomies</h3>
+<p>Dichotomies must be prefixed with either ‘:’ or ‘;’ and may appear alone or in conjunction with an attribute. Inputs with dichotomies prefixed with ‘:’ are kept only if the underlying method evaluates to <code>true</code>, while those prefixed with ‘;’ are only kept if the underlying method evaluates to <code>false</code>. If the Dichotomy is part of an attribute selector, it must appear after the attribute declaration.</p>
+<p>Valid Dichotomies consist of:</p>
+
+<ul>
+<li>"hasChanged": Inputs are filtered based on the value returned by <code>hasChanged</code></li>
+<li>"isValid": Inputs are filtered based on the value returned by <code>isValid</code></li>
+<li>"isDisabled": Inputs are filtered based on the value returned by <code>isDisabled</code></li>
+</ul>
+
+<h3 id="aggregators" class="text-header"><a id="aggregators" class="anchor" href="#aggregators" aria-hidden="true"></a>Aggregators</h3>
+<p>Aggregators are used to specify how groups of entities that have undergone filtering are combined. The type of aggregation that is performed on the groups is determined exclusively by the operator. The following aggregators are supported:</p>
+
+<ul>
+<li>“&amp;” Intersect: Filtered Inputs are combined with only those Inputs that appear on both sides returned in the aggregate.</li>
+<li>“|” Merge: Filtered Inputs are combined with Inputs on both sides returned in the aggregate.</li>
+<li>“-” Exclude: Filtered Inputs are excluded from all Inputs under the Form. (Technically evaluates as "(*-filtered)" where * indicates all Inputs.)</li>
+</ul>
+
+<h3 id="grouping" class="text-header"><a id="grouping" class="anchor" href="#grouping" aria-hidden="true"></a>Grouping</h3>
+<p>Parenthesises are used to group entities through aggregation operations. They are mainly suited to cases where the evaluation of aggregators is unclear or the default precedence would result in an undesired outcome.</p>
+
+<ul>
+<li>“(…)” Used exclusively to determine the evaluation order of aggregation operations.</li>
+</ul>
+
+<h3 id="caveats" class="text-header"><a id="caveats" class="anchor" href="#caveats" aria-hidden="true"></a>Caveats</h3>
+<p>Here are some common mistakes that are made with Input selectors with the correct method provided where applicable:</p>
+<ul>
+<li>“(…):hasChanged” is not acceptable as a selector. Property and dichotomy filters are only valid at what would be considered the node level of each evaluation branch.</li>
+<li>"[name=name][name=address]" is not acceptable as an aggregate selector.  Use '|' between selectors for these situations.</li>
+<li>"[name=name][type=type]" is not acceptable as a filter selector.  Either use '&' between the property selectors or combine the property name, value pairs: [name=name,type=type].</li>
+<li>":hasChanged-:isValid" is not acceptable as a selector. The exclusion operator '-' performs exclusion against all inputs.  Use ":hasChanged;isValid" instead.</li>
+</ul>
+
+</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">jQuery Form Manager maintained by <a href="https://github.com/borgboyone">Anthony Wells</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>

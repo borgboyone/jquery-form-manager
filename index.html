@@ -47,14 +47,14 @@
 <h3 class="text-header">
 <a id="overview" class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview</h3>
 
-<p>The W3C has been working toward providing a meaningful and functionally useful specification of form input control and validation for some time.  As it stands, implementation varies from browser to browser, with some browsers providing no support at all.  This collection of jQuery UI Widgets aims to provide a consitent, cross browser interface that can be extended to accomodate any user input construct.</p>
+<p>The W3C has been working toward providing a meaningful and functionally useful specification of form input control and validation for some time.  As it stands, implementation varies from browser to browser, with some browsers providing no support at all.  This collection of jQuery UI Widgets aims to provide a consistent, cross browser interface that can be extended to accomodate any user input construct.</p>
 
 <h3 class="text-header">
 <a id="input" class="anchor" href="#input" aria-hidden="true"><span class="octicon octicon-link"></span></a>Input</h3>
 
-<p>The base foundation in this collection of form related tools is the <em>Input</em> widget.  The <em>Input</em> widget specifies the interface that users should make available when extending the widget and also provides rudimentary functionality.</p>
+<p>The base foundation in this collection of form related tools is the <em>Input</em> widget.  The <em>Input</em> widget specifies the functions that users should make available when implementing an <em>Input</em> widget and also provides rudimentary functionality for users extending from the widget.</p>
 
-<p>Core concept functions include:</p>
+<p>Core functions include:</p>
 
 <ul>
 <li>
@@ -66,9 +66,9 @@
 <li>
 <code>validation</code>: user defined validation function</li>
 <li>
-<code>invalidate</code>: visual response method to negative validation outcome</li>
+<code>invalidate</code>: adds visuals to negative validation outcome</li>
 <li>
-<code>clear</code>: removal of these visuals</li>
+<code>clear</code>: removal of negative validation visuals</li>
 <li>
 <code>change</code>: callback when the value is changed</li>
 <li>
@@ -86,18 +86,16 @@
 <code>isDisabled</code>: Is the input disabled</li>
 </ul>
 
-<p>The <em>Input</em> widget is noval in that it brings the concept of an interface to the jQuery UI framework; a key feature that has been lacking for some time.  Any interactive element can become an <em>Input</em> by extending the base widget and implementing a handful of functions (See Examples below).</p>
+<p>The <em>Input</em> widget is noval in that it brings the concept of an interface to the jQuery UI framework; a key feature that has been lacking for some time.  Any interactive element can become an <em>Input</em> widget by extending the base widget or by importing the base widget's methods (See Examples below).</p>
 
 <h3 class="text-header">
 <a id="form" class="anchor" href="#form" aria-hidden="true"><span class="octicon octicon-link"></span></a>Form</h3>
 
-<p>The <em>Form</em> widget brings everything together by providing the cohesive glue expected for a collection of Inputs, acting as both the overseer and manager of any <em>Input</em> that is attached to an element that is a descendent of the Form's attached element.</p>
+<p>The <em>Form</em> widget provides a central access point for operations on Inputs in a group fashion.  It serves as manager of any <em>Input</em> that is attached to an element that is a descendent of the Form's attached element.</p>
 
-<p>The Form functionality mirrors that of the Input interface with the only difference being that functions are applied to all Inputs that are considered a part of the Form.  For example, users can query all the values of the Inputs, the names of the Inputs, call any of the Input methods, such as <code>clear</code>, <code>reset</code>, <code>validate</code>, all at the Form level.</p>
+<p>The Form functionality mirrors that of the Input interface with the only difference being that functions are applied to all Inputs (or a subset of those Inputs via selector) that are considered a part of the Form.  For example, users can query all the values of the Inputs or call any of the Input methods, such as <code>clear</code>, <code>reset</code>, <code>validate</code>, on all the Inputs at the Form level.</p>
 
-<p>Note, the Form doesn't require an actual form element; it can be attached to any element.  Also, it is not necessary to specify the Inputs when instantiating the Form.  Any Input that is a descendent of the Form element is automatically associated with the Form.  There is no stored association and Input's can be created and destroyed at will.</p>
-
-<p>The jQuery UI Form manager also provides an extensive selector mechanism for filtering Inputs in all Form functions.  <em>Inputs</em> can be filtered by properties (aka attributes) and dichotomies (aka booleans).  In addition to these filters there are also various Venn type operators available, including exclude ('-'), group ('('...')'), merge ('|') and intersect ('&amp;').  Combined with the base filtering mechanisms, these operators provide aggregation of inputs that would normally only be accomplished through several intermediate calls to the <code>inputs</code> function.</p>
+<p>The jQuery UI Form manager also provides an extensive selector mechanism for filtering Inputs in all Form functions.  <em>Inputs</em> can be filtered by properties (aka attributes) and dichotomies (aka booleans).  In addition to these filters there are also various Set type operators available, including merge ('|'), intersect ('&amp;'), exclude ('-'), and group ('('...')').  These operators allow aggregation of inputs that would normally only be accomplished through several intermediate calls to the <code>inputs</code> function.</p>
 
 <p>An Input implementation for basic input form elements (text, password, textarea, select, checkbox, and radio) is provided to aid users in getting started quickly with the Form Manager.</p>
 

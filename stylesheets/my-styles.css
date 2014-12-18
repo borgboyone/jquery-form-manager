@@ -33,3 +33,6 @@
 	text-decoration: none;
 	background: none repeat scroll 0% 0% gray;
 }
+ul {
+	padding-left: 3em;
+}
