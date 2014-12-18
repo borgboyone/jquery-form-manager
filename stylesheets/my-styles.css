@@ -1,0 +1,35 @@
+.simple-menu {
+	position: absolute;
+	bottom: -37px;
+	z-index: 10;
+}
+.simple-menu:hover {
+	background: none repeat scroll 0% 0% lightgray;
+}
+.simple-menu span {
+	font-size: 24px;
+	color: rgb(0, 126, 223);
+	font-weight: bold;
+	padding-left: 0.2em;
+	padding-right: 0.2em;	
+}
+.text-header {
+	margin-bottom: -13px;
+}
+.code-header {
+	margin-bottom: -5px;
+}
+#header_wrap .menu {
+    position: absolute; 
+    background: none repeat scroll 0% 0% lightgray; 
+    font-size: 24px; 
+    width: 100%;
+}
+#header_wrap .menu .menu-item a {
+	display: block;
+	padding-left: 0.4em;
+}
+.menu .menu-item a:hover {
+	text-decoration: none;
+	background: none repeat scroll 0% 0% gray;
+}
