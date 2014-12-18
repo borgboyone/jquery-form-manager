@@ -12,10 +12,31 @@
 var inputBasic = $.widget("aw.inputBasic", $.aw.input, {
 	version: "1.0.0",
 	options: {
+/*	@option{name: "initialValue", type: "Mixed", default: "none"}
+		The initial value used to set the input's value on widget creation.
+*/
 		initialValue: undefined,
+/*	@option{name: "checkboxValues", type: "String", default: "none"}
+		This option allows the user to set both the checked and unchecked
+		value if the input is of type checkbox. The values must be separated
+		with the '|' character with the checked (true) value appearing first.
+*/
 		checkboxValues: null,
+/*	@option{name: "name", type: "String", default: "none"}
+		The name used for the input widget not necessarily the same as the
+		underlying input's name attribute. If name is not provided, the
+		input's name attribute is used instead.
+*/
 		name: null,
 		change: null,
+/*	@option{name: "maintainInitialDefault", type: "Boolean", default: "false"}
+		If set to true, the initial value of the input is not used to set the
+		default when no initialValue option is provided. This is particularly 
+		useful in situations where the browser's auto-fill feature populates
+		form fields on page load.  If set to false, the initial value of the
+		input is used to set the default if an initialValue option is not
+		provided.
+*/
 		maintainInitialDefault: false
 	},
 	_change: function(event) {

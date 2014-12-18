@@ -118,13 +118,12 @@
 						 (("dichotomies" in filters) && $.isPlainObject(filters['dichotomies']) && Object.keys(filters['dichotomies']).map(function(key) { return filters['dichotomies'][key]; }).reduce(function(prev, cur){ return prev && $.isFunction(cur); }, true)))) {
 						return filter_cache[name] = new Parser({yy: {filters: filters}});
 					} else {
-						throw new Error("Filters is not provided or is not the correct format.");
+						throw new Error("Filters are not provided or are not in the correct format.");
 					}
 				},
 				"get" : function(name) {
 					return filter_cache[name] ? filter_cache[name] : null;
 				},
-				"getAll": function() { return filter_cache; },
 				"remove" : function(name) {
 					if (!(name in filter_cache)) {
 						return false;
